@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SellMetrics — Margem real em marketplaces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f8f8;
+      --text: #1a1a1a;
+      --text-muted: #5c5c5c;
+      --border: #e8e8e8;
+      --dark: #121212;
+      --dark-soft: #2a2a2a;
+      --gold: #d4a017;
+      --gold-light: #f5e6b8;
+      --gold-hover: #b8890f;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      --header-h: 72px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-top: var(--header-h);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+
+    .header__inner {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .nav__links a:hover {
+      color: var(--dark);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn--primary {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .btn--primary:hover {
+      background: var(--gold-hover);
+      box-shadow: 0 4px 16px rgba(212, 160, 23, 0.35);
+    }
+
+    .btn--dark {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .btn--dark:hover {
+      background: var(--dark-soft);
+    }
+
+    .btn--outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn--outline:hover {
+      border-color: var(--dark);
+    }
+
+    .btn--lg {
+      padding: 16px 32px;
+      font-size: 1.05rem;
+      border-radius: 10px;
+    }
+
+    .nav__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav__actions .btn--outline {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .menu-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+
+    .hero__badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--gold-light);
+      color: var(--dark);
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--dark);
+      max-width: 820px;
+      margin: 0 auto 20px;
+    }
+
+    .hero__subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+
+    .hero__markets {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .hero__market {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Calculator section */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .section__title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .section__desc {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+
+    /* Calculator widget */
+    .calc {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .calc__tabs {
+      display: flex;
+      background: var(--dark);
+    }
+
+    .calc__tab {
+      flex: 1;
+      padding: 16px 12px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+      border-bottom: 3px solid transparent;
+    }
+
+    .calc__tab:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .calc__tab.active {
+      color: #fff;
+      background: var(--dark-soft);
+      border-bottom-color: var(--gold);
+    }
+
+    .calc__body {
+      padding: 32px;
+    }
+
+    .calc__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .calc__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .calc__field--full {
+      grid-column: 1 / -1;
+    }
+
+    .calc__field label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .calc__field label small {
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .calc__field input,
+    .calc__field select {
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .calc__field input:focus,
+    .calc__field select:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-light);
+    }
+
+    .calc__hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .calc__submit {
+      width: 100%;
+      margin-top: 24px;
+    }
+
+    .calc__results {
+      margin-top: 28px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+
+    .calc__results.visible {
+      display: block;
+    }
+
+    .calc__results h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--dark);
+    }
+
+    .calc__result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .calc__result-row:last-child {
+      border-bottom: none;
+    }
+
+    .calc__result-row span:first-child {
+      color: var(--text-muted);
+    }
+
+    .calc__result-row span:last-child {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .calc__result-row--negative span:last-child {
+      color: #c0392b;
+    }
+
+    .calc__result-row--highlight {
+      background: var(--gold-light);
+      margin: 12px -16px 0;
+      padding: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .calc__result-row--highlight span:first-child {
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .calc__result-row--highlight span:last-child {
+      font-size: 1.35rem;
+      color: var(--dark);
+    }
+
+    .calc__margin-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      background: var(--dark);
+      color: var(--gold);
+    }
+
+    /* Planos placeholder */
+    .planos {
+      background: var(--dark);
+      color: #fff;
+      padding: 64px 24px;
+      margin-top: 24px;
+    }
+
+    .planos__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .planos h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      margin-bottom: 12px;
+    }
+
+    .planos p {
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 480px;
+      margin: 0 auto 28px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 32px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer strong {
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .nav__links,
+      .nav__actions .btn--outline {
+        display: none;
+      }
+
+      .nav--open .nav__links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 24px;
+        border-bottom: 1px solid var(--border);
+        gap: 16px;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .calc__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .calc__body {
+        padding: 24px 20px;
+      }
+
+      .calc__tab {
+        font-size: 0.8rem;
+        padding: 14px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <a href="#" class="logo">Sell<span>Metrics</span></a>
+      <nav class="nav" id="nav">
+        <ul class="nav__links">
+          <li><a href="#calculadora">Calculadora</a></li>
+          <li><a href="#planos">Planos</a></li>
+          <li><a href="#entrar">Entrar</a></li>
+        </ul>
+        <div class="nav__actions">
+          <a href="#entrar" class="btn btn--outline">Entrar</a>
+          <a href="#calculadora" class="btn btn--primary">Começar grátis</a>
+        </div>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <span class="hero__badge">Para fabricantes de moda</span>
+    <h1>Descubra quanto você realmente lucra em cada marketplace</h1>
+    <p class="hero__subtitle">Calcule sua margem real no Mercado Livre, Shopee e TikTok Shop em segundos</p>
+    <a href="#calculadora" class="btn btn--primary btn--lg">Usar calculadora grátis</a>
+    <div class="hero__markets">
+      <span class="hero__market">Mercado Livre</span>
+      <span class="hero__market">Shopee</span>
+      <span class="hero__market">TikTok Shop</span>
+    </div>
+  </section>
+
+  <section class="section" id="calculadora">
+    <h2 class="section__title">Calculadora de margem real</h2>
+    <p class="section__desc">Preencha os dados e veja instantaneamente quanto sobra em cada marketplace</p>
+
+    <div style="max-width:900px;margin:0 auto;padding:0 24px;">
+
+      <!-- Inputs principais -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:13px;color:#5c5c5c;">Custo do produto (R$)</label>
+          <input type="number" id="sm-custo" value="30" min="0" step="1" oninput="smCalc()" style="height:42px;border-radius:8px;border:1px solid #e8e8e8;font-size:15px;padding:0 12px;outline:none;font-family:inherit;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:13px;color:#5c5c5c;">Preço de venda (R$)</label>
+          <input type="number" id="sm-preco" value="89.90" min="0" step="0.1" oninput="smCalc()" style="height:42px;border-radius:8px;border:1px solid #e8e8e8;font-size:15px;padding:0 12px;outline:none;font-family:inherit;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:13px;color:#5c5c5c;">Custo embalagem (R$)</label>
+          <input type="number" id="sm-emb" value="3" min="0" step="0.5" oninput="smCalc()" style="height:42px;border-radius:8px;border:1px solid #e8e8e8;font-size:15px;padding:0 12px;outline:none;font-family:inherit;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label style="font-size:13px;color:#5c5c5c;">Imposto sobre venda (%)</label>
+          <input type="number" id="sm-imp" value="6" min="0" max="30" step="0.5" oninput="smCalc()" style="height:42px;border-radius:8px;border:1px solid #e8e8e8;font-size:15px;padding:0 12px;outline:none;font-family:inherit;">
+        </div>
+      </div>
+
+      <!-- Ads slider -->
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;background:#f8f8f8;border-radius:8px;padding:14px 18px;">
+        <label style="font-size:13px;color:#5c5c5c;white-space:nowrap;min-width:150px;">Investimento em ads (%)</label>
+        <input type="range" id="sm-ads" min="0" max="30" value="10" step="1" oninput="document.getElementById('sm-ads-out').textContent=this.value+'%';smCalc()" style="flex:1;">
+        <span id="sm-ads-out" style="font-size:13px;font-weight:600;min-width:36px;text-align:right;">10%</span>
+      </div>
+
+      <!-- Opções por plataforma -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
+        <div style="background:#FFFDF0;border:1px solid #F5D76E;border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:600;color:#8B6914;margin-bottom:10px;">🛒 Mercado Livre</div>
+          <label style="font-size:12px;color:#8B6914;display:block;margin-bottom:6px;">Tipo de anúncio</label>
+          <select id="sm-ml-tipo" onchange="smCalc()" style="width:100%;height:34px;border-radius:6px;border:1px solid #F5D76E;background:#FFFDF0;color:#5A3E00;font-size:13px;padding:0 8px;">
+            <option value="0.12">Clássico (12%)</option>
+            <option value="0.17">Premium (17%)</option>
+          </select>
+        </div>
+        <div style="background:#FFF5F2;border:1px solid #FFBDAD;border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:600;color:#CC3300;margin-bottom:10px;">🛍️ Shopee</div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#CC3300;cursor:pointer;">
+            <input type="checkbox" id="sm-shopee-camp" onchange="smCalc()">
+            Campanha de destaque (+2,5%)
+          </label>
+        </div>
+        <div style="background:#F7F7F7;border:1px solid #CCCCCC;border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:600;color:#111;margin-bottom:10px;">🎵 TikTok Shop</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <label style="font-size:12px;color:#333;white-space:nowrap;">Afiliado</label>
+            <input type="range" id="sm-afil" min="0" max="20" value="0" step="1" oninput="document.getElementById('sm-afil-out').textContent=this.value+'%';smCalc()" style="flex:1;">
+            <span id="sm-afil-out" style="font-size:12px;font-weight:600;color:#111;min-width:28px;">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultados -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;" id="sm-results"></div>
+
+      <p style="font-size:12px;color:#aaa;margin-top:8px;text-align:center;">Taxas baseadas nas tabelas oficiais de 2026. Imposto padrão: 6% (Simples Nacional).</p>
+    </div>
+  </section>
+
+  <script>
+  function smCalc() {
+    const custo = parseFloat(document.getElementById('sm-custo').value)||0;
+    const preco = parseFloat(document.getElementById('sm-preco').value)||0;
+    const emb   = parseFloat(document.getElementById('sm-emb').value)||0;
+    const imp   = (parseFloat(document.getElementById('sm-imp').value)||0)/100;
+    const ads   = (parseFloat(document.getElementById('sm-ads').value)||0)/100;
+    const mlTipo= parseFloat(document.getElementById('sm-ml-tipo').value)||0.12;
+    const camp  = document.getElementById('sm-shopee-camp').checked;
+    const afil  = (parseFloat(document.getElementById('sm-afil').value)||0)/100;
+
+    const adsV  = preco*ads;
+    const impV  = preco*imp;
+
+    function fmt(n){ return 'R$ '+Math.abs(n).toFixed(2); }
+
+    function calcML(p){
+      const com = p*mlTipo;
+      const frete = p<=79?0:(p<=199.99?p*0.05:p*0.07);
+      const lucro = p - com - frete - adsV - impV - custo - emb;
+      return { rows:[
+        {l:'Comissão ('+(mlTipo*100).toFixed(0)+'%)',v:com},
+        {l:'Frete estimado',v:frete},
+        {l:'Ads ('+(ads*100).toFixed(0)+'%)',v:adsV},
+        {l:'Imposto ('+(imp*100).toFixed(1)+'%)',v:impV},
+        {l:'Custo produto',v:custo},
+        {l:'Embalagem',v:emb},
+      ], lucro, margem:p>0?lucro/p*100:0 };
+    }
+
+    function calcShopee(p){
+      let com,fixo;
+      if(p<80){com=0.20;fixo=4;}
+      else if(p<100){com=0.14;fixo=16;}
+      else if(p<200){com=0.14;fixo=20;}
+      else{com=0.14;fixo=26;}
+      const extra=camp?0.025:0;
+      const comV=p*(com+extra);
+      const lucro=p-comV-fixo-adsV-impV-custo-emb;
+      return { rows:[
+        {l:'Comissão ('+((com+extra)*100).toFixed(1)+'%'+(camp?' +camp.':'')+')',v:comV},
+        {l:'Taxa fixa',v:fixo},
+        {l:'Ads ('+(ads*100).toFixed(0)+'%)',v:adsV},
+        {l:'Imposto ('+(imp*100).toFixed(1)+'%)',v:impV},
+        {l:'Custo produto',v:custo},
+        {l:'Embalagem',v:emb},
+      ], lucro, margem:p>0?lucro/p*100:0 };
+    }
+
+    function calcTikTok(p){
+      const comV=p*0.06;
+      const fixo=p<79?2:0;
+      const afilV=p*afil;
+      const lucro=p-comV-fixo-afilV-adsV-impV-custo-emb;
+      return { rows:[
+        {l:'Comissão (6%)',v:comV},
+        {l:'Taxa fixa',v:fixo},
+        {l:'Afiliado ('+(afil*100).toFixed(0)+'%)',v:afilV},
+        {l:'Ads ('+(ads*100).toFixed(0)+'%)',v:adsV},
+        {l:'Imposto ('+(imp*100).toFixed(1)+'%)',v:impV},
+        {l:'Custo produto',v:custo},
+        {l:'Embalagem',v:emb},
+      ], lucro, margem:p>0?lucro/p*100:0 };
+    }
+
+    const plats = [
+      {nome:'Mercado Livre', emoji:'🛒', cls:'ml',  bg:'#FFFDF0', border:'#F5D76E', bestBorder:'#D4A017', nameCor:'#8B6914', badgeBg:'#F5D76E', badgeCor:'#7A5200', dados:calcML(preco)},
+      {nome:'Shopee',        emoji:'🛍️', cls:'sh',  bg:'#FFF5F2', border:'#FFBDAD', bestBorder:'#FF6633', nameCor:'#CC3300', badgeBg:'#FF6633', badgeCor:'#fff',    dados:calcShopee(preco)},
+      {nome:'TikTok Shop',   emoji:'🎵', cls:'tt',  bg:'#F7F7F7', border:'#CCCCCC', bestBorder:'#111111', nameCor:'#111111', badgeBg:'#222',    badgeCor:'#fff',    dados:calcTikTok(preco)},
+    ];
+
+    const melhor = plats.reduce((a,b)=>a.dados.lucro>b.dados.lucro?a:b).nome;
+
+    document.getElementById('sm-results').innerHTML = plats.map(p=>{
+      const d=p.dados;
+      const isBest=p.nome===melhor&&d.lucro>0;
+      const lCor=d.lucro>=0?'#1D9E75':'#A32D2D';
+      const rows=d.rows.map(r=>`
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#5c5c5c;margin-bottom:4px;">
+          <span>${r.l}</span><span>- ${fmt(r.v)}</span>
+        </div>`).join('');
+      return `
+        <div style="background:${p.bg};border:${isBest?'2px':'1px'} solid ${isBest?p.bestBorder:p.border};border-radius:12px;padding:16px 18px;">
+          <div style="font-size:13px;font-weight:600;color:${p.nameCor};margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+            ${p.emoji} ${p.nome}
+            ${isBest?`<span style="font-size:11px;background:${p.badgeBg};color:${p.badgeCor};padding:2px 8px;border-radius:6px;margin-left:4px;">melhor margem</span>`:''}
+          </div>
+          ${rows}
+          <div style="display:flex;justify-content:space-between;border-top:1px solid rgba(0,0,0,0.08);padding-top:8px;margin-top:8px;font-size:15px;font-weight:600;color:#1a1a1a;">
+            <span>Lucro líquido</span>
+            <span style="color:${lCor};">${d.lucro<0?'- ':''}${fmt(d.lucro)}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#5c5c5c;margin-top:4px;">
+            <span>Margem</span>
+            <span style="color:${lCor};font-weight:500;">${d.margem.toFixed(1)}%</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+  smCalc();
+  </script>
+
+  <section class="planos" id="planos">
+    <div class="planos__inner">
+      <h2>Planos em breve</h2>
+      <p>Estamos preparando planos para equipes de produção e vendas. Use a calculadora gratuitamente enquanto isso.</p>
+      <a href="#calculadora" class="btn btn--primary">Começar grátis</a>
+    </div>
+  </section>
+
+  <section id="entrar" style="height:0;overflow:hidden" aria-hidden="true"></section>
+
+  <footer class="footer">
+    <p>&copy; <strong>SellMetrics</strong> 2026. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    (function () {
+      const MARKET_DEFAULTS = {
+        ml: {
+          name: 'Mercado Livre',
+          comissao: 13,
+          taxaFixa: 0,
+          hintComissao: 'Padrão moda: 13%',
+          hintTaxa: 'ML: R$ 6 em itens abaixo de R$ 79 (preencha se aplicável)'
+        },
+        shopee: {
+          name: 'Shopee',
+          comissao: 14,
+          taxaFixa: 0,
+          hintComissao: 'Comissão + taxa de transação ~14–20%',
+          hintTaxa: 'Programa de frete grátis pode adicionar custos'
+        },
+        tiktok: {
+          name: 'TikTok Shop',
+          comissao: 6,
+          taxaFixa: 0,
+          hintComissao: 'Comissão categoria moda ~5–8%',
+          hintTaxa: 'Taxas de pagamento já inclusas na estimativa'
+        }
+      };
+
+      let currentMarket = 'ml';
+
+      const tabs = document.querySelectorAll('.calc__tab');
+      const comissaoInput = document.getElementById('comissao');
+      const taxaFixaInput = document.getElementById('taxaFixa');
+      const comissaoHint = document.getElementById('comissaoHint');
+      const taxaFixaHint = document.getElementById('taxaFixaHint');
+      const resultMarketName = document.getElementById('resultMarketName');
+      const calcResults = document.getElementById('calcResults');
+      const precoVendaInput = document.getElementById('precoVenda');
+
+      function formatBRL(value) {
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+
+      function formatPct(value) {
+        return value.toFixed(1).replace('.', ',') + '%';
+      }
+
+      function applyMarketDefaults(market) {
+        const d = MARKET_DEFAULTS[market];
+        currentMarket = market;
+        comissaoInput.value = d.comissao;
+        taxaFixaInput.value = d.taxaFixa;
+        comissaoHint.textContent = d.hintComissao;
+        taxaFixaHint.textContent = d.hintTaxa;
+        resultMarketName.textContent = d.name;
+
+        if (market === 'ml') {
+          const preco = parseFloat(precoVendaInput.value) || 0;
+          if (preco > 0 && preco < 79) {
+            taxaFixaInput.value = 6;
+          }
+        }
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          const market = tab.dataset.market;
+          tabs.forEach(function (t) {
+            t.classList.toggle('active', t === tab);
+            t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+          });
+          applyMarketDefaults(market);
+        });
+      });
+
+      precoVendaInput.addEventListener('input', function () {
+        if (currentMarket !== 'ml') return;
+        const preco = parseFloat(precoVendaInput.value) || 0;
+        taxaFixaInput.value = preco > 0 && preco < 79 ? 6 : (parseFloat(taxaFixaInput.value) || 0);
+      });
+
+      document.getElementById('calcForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const precoVenda = parseFloat(document.getElementById('precoVenda').value) || 0;
+        const custoProduto = parseFloat(document.getElementById('custoProduto').value) || 0;
+        const custoEmbalagem = parseFloat(document.getElementById('custoEmbalagem').value) || 0;
+        const frete = parseFloat(document.getElementById('frete').value) || 0;
+        const comissaoPct = parseFloat(document.getElementById('comissao').value) || 0;
+        const taxaFixa = parseFloat(document.getElementById('taxaFixa').value) || 0;
+        const impostosPct = parseFloat(document.getElementById('impostos').value) || 0;
+
+        const valorComissao = precoVenda * (comissaoPct / 100);
+        const valorImpostos = precoVenda * (impostosPct / 100);
+        const custoTotal = custoProduto + custoEmbalagem;
+        const lucro = precoVenda - valorComissao - taxaFixa - valorImpostos - custoTotal - frete;
+        const margem = precoVenda > 0 ? (lucro / precoVenda) * 100 : 0;
+
+        document.getElementById('resReceita').textContent = formatBRL(precoVenda);
+        document.getElementById('resComissao').textContent = formatBRL(valorComissao) + ' (' + formatPct(comissaoPct) + ')';
+        document.getElementById('resTaxaFixa').textContent = formatBRL(taxaFixa);
+        document.getElementById('resImpostos').textContent = formatBRL(valorImpostos) + ' (' + formatPct(impostosPct) + ')';
+        document.getElementById('resCustoProduto').textContent = formatBRL(custoTotal);
+        document.getElementById('resFrete').textContent = formatBRL(frete);
+
+        const lucroEl = document.getElementById('resLucro');
+        lucroEl.textContent = formatBRL(lucro);
+        lucroEl.parentElement.classList.toggle('calc__result-row--negative', lucro < 0);
+
+        const margemEl = document.getElementById('resMargem');
+        margemEl.textContent = formatPct(margem);
+        margemEl.style.background = margem >= 20 ? 'var(--dark)' : margem >= 10 ? '#5c5c5c' : '#c0392b';
+        margemEl.style.color = margem >= 10 ? 'var(--gold)' : '#fff';
+
+        calcResults.classList.add('visible');
+        calcResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+
+      applyMarketDefaults('ml');
+
+      document.getElementById('menuToggle').addEventListener('click', function () {
+        document.getElementById('nav').classList.toggle('nav--open');
+      });
+
+      document.querySelectorAll('.nav__links a, .hero a, .planos a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          document.getElementById('nav').classList.remove('nav--open');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
