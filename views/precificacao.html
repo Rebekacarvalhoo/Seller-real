@@ -1,0 +1,308 @@
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --text: #f0f0f0;
+    --text2: #888;
+    --text3: #555;
+    --gold: #d4a017;
+    --gold-light: #f5c842;
+    --green: #22c55e;
+    --red: #ef4444;
+    --ml: #ffe600;
+    --shopee: #ff6633;
+    --tiktok: #69c9d0;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  
+
+  /* MAIN */
+  .main { padding: 28px 32px; min-height: 100vh; }
+
+  .topbar { margin-bottom: 28px; }
+  .topbar h1 { font-size: 22px; font-weight: 600; }
+  .topbar p { font-size: 13px; color: var(--text2); margin-top: 4px; }
+
+  /* CARD PRINCIPAL */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+  .card-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); margin-bottom: 18px; }
+
+  /* INPUTS */
+  .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .input-group { display: flex; flex-direction: column; gap: 6px; }
+  .input-label { font-size: 12px; color: var(--text2); font-weight: 500; }
+  .input-wrap { position: relative; }
+  .input-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text2); }
+  .input-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text2); }
+  .form-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); font-size: 18px; font-weight: 600; padding: 12px 16px 12px 36px;
+    border-radius: var(--radius-sm); outline: none; font-family: inherit;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input.suffix { padding: 12px 36px 12px 16px; }
+  .input-hint { font-size: 11px; color: var(--text3); }
+
+  /* MARGEM SLIDER */
+  .margem-wrap { margin-bottom: 20px; }
+  .margem-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .margem-label { font-size: 12px; color: var(--text2); font-weight: 500; }
+  .margem-value { font-size: 22px; font-weight: 700; color: var(--gold); }
+  input[type=range] { width: 100%; accent-color: var(--gold); height: 6px; cursor: pointer; }
+  .margem-refs { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+  /* PLATAFORMAS TOGGLE */
+  .plat-toggle { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .plat-btn {
+    flex: 1; min-width: 100px; padding: 12px 8px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); background: var(--surface2); color: var(--text2);
+    font-size: 13px; font-weight: 500; cursor: pointer; text-align: center;
+    transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .plat-btn.ml.on { background: rgba(255,230,0,0.1); border-color: var(--ml); color: var(--ml); }
+  .plat-btn.shopee.on { background: rgba(255,102,51,0.1); border-color: var(--shopee); color: var(--shopee); }
+  .plat-btn.tiktok.on { background: rgba(105,201,208,0.1); border-color: var(--tiktok); color: var(--tiktok); }
+
+  /* OPCOES EXTRAS */
+  .extras { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+  .extra-group { display: flex; flex-direction: column; gap: 4px; }
+  .extra-label { font-size: 11px; color: var(--text3); }
+  .extra-select, .extra-input {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    font-size: 13px; padding: 8px 10px; border-radius: var(--radius-sm); outline: none;
+  }
+  .extra-select:focus, .extra-input:focus { border-color: var(--gold); }
+
+  /* RESULTADO */
+  .resultado-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .resultado-card {
+    border-radius: var(--radius); padding: 20px;
+    transition: transform 0.2s;
+  }
+  .resultado-card:hover { transform: translateY(-2px); }
+  .resultado-card.ml { background: rgba(255,230,0,0.05); border: 1px solid rgba(255,230,0,0.2); }
+  .resultado-card.shopee { background: rgba(255,102,51,0.05); border: 1px solid rgba(255,102,51,0.2); }
+  .resultado-card.tiktok { background: rgba(105,201,208,0.05); border: 1px solid rgba(105,201,208,0.2); }
+  .resultado-card.melhor { transform: scale(1.02); }
+  .resultado-card.ml.melhor { border: 2px solid var(--ml); }
+  .resultado-card.shopee.melhor { border: 2px solid var(--shopee); }
+  .resultado-card.tiktok.melhor { border: 2px solid var(--tiktok); }
+  .resultado-card.inativo { opacity: 0.3; pointer-events: none; }
+
+  .res-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .res-nome { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .res-nome.ml { color: var(--ml); }
+  .res-nome.shopee { color: var(--shopee); }
+  .res-nome.tiktok { color: var(--tiktok); }
+  .res-badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+  .ml .res-badge { background: var(--ml); color: #000; }
+  .shopee .res-badge { background: var(--shopee); color: #fff; }
+  .tiktok .res-badge { background: var(--tiktok); color: #000; }
+
+  .preco-sugerido { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
+  .ml .preco-sugerido { color: var(--ml); }
+  .shopee .preco-sugerido { color: var(--shopee); }
+  .tiktok .preco-sugerido { color: var(--tiktok); }
+  .preco-label { font-size: 11px; color: var(--text3); margin-bottom: 16px; }
+
+  .res-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .res-row:last-child { border-bottom: none; }
+  .res-row-label { color: var(--text2); }
+  .res-row-val { font-weight: 500; }
+  .res-row-val.neg { color: var(--red); }
+  .res-row-val.pos { color: var(--green); }
+  .res-row.lucro { margin-top: 8px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: none; font-size: 14px; font-weight: 700; }
+
+  .copiar-btn {
+    width: 100%; margin-top: 14px; padding: 9px; border-radius: var(--radius-sm);
+    font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid;
+    background: transparent; transition: all 0.15s;
+  }
+  .ml .copiar-btn { border-color: rgba(255,230,0,0.3); color: var(--ml); }
+  .ml .copiar-btn:hover { background: rgba(255,230,0,0.1); }
+  .shopee .copiar-btn { border-color: rgba(255,102,51,0.3); color: var(--shopee); }
+  .shopee .copiar-btn:hover { background: rgba(255,102,51,0.1); }
+  .tiktok .copiar-btn { border-color: rgba(105,201,208,0.3); color: var(--tiktok); }
+  .tiktok .copiar-btn:hover { background: rgba(105,201,208,0.1); }
+
+  /* AVISO MARGEM BAIXA */
+  .aviso { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; color: #fca5a5; margin-bottom: 16px; display: none; }
+
+  /* HISTÓRICO */
+  .historico-lista { display: flex; flex-direction: column; gap: 8px; }
+  .hist-item { display: flex; align-items: center; gap: 12px; background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; }
+  .hist-nome { flex: 1; font-weight: 500; }
+  .hist-plat { font-size: 11px; color: var(--text3); }
+  .hist-preco { font-weight: 600; color: var(--gold); }
+  .hist-margem { font-size: 12px; color: var(--green); }
+  .hist-del { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 14px; }
+  .hist-del:hover { color: var(--red); }
+
+  .empty-hist { text-align: center; padding: 24px; color: var(--text3); font-size: 13px; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { padding: 28px 32px; min-height: 100vh; }
+    .inputs-grid { grid-template-columns: 1fr; }
+    .extras { grid-template-columns: 1fr 1fr; }
+    .resultado-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<main class="main">
+  <div class="topbar">
+    <h1>🧮 Calculadora de Precificação</h1>
+    <p>Informe o custo e a margem desejada — o sistema calcula o preço ideal em cada plataforma</p>
+  </div>
+
+  <!-- AVISO -->
+  <div class="aviso" id="aviso">⚠️ <span id="aviso-msg"></span></div>
+
+  <!-- INPUTS -->
+  <div class="card">
+    <div class="card-title">Dados do produto</div>
+
+    <div class="inputs-grid">
+      <div class="input-group">
+        <span class="input-label">Custo do produto (R$)</span>
+        <div class="input-wrap">
+          <span class="input-prefix">R$</span>
+          <input class="form-input" id="custo" type="number" value="30" min="0" step="0.5" oninput="calcular()">
+        </div>
+        <span class="input-hint">Custo de fabricação ou compra por unidade</span>
+      </div>
+      <div class="input-group">
+        <span class="input-label">Embalagem (R$)</span>
+        <div class="input-wrap">
+          <span class="input-prefix">R$</span>
+          <input class="form-input" id="embalagem" type="number" value="3" min="0" step="0.5" oninput="calcular()">
+        </div>
+        <span class="input-hint">Custo da embalagem por unidade</span>
+      </div>
+    </div>
+
+    <!-- MARGEM SLIDER -->
+    <div class="margem-wrap">
+      <div class="margem-header">
+        <span class="input-label">Margem líquida desejada</span>
+        <span class="margem-value" id="margem-display">15%</span>
+      </div>
+      <input type="range" id="margem" min="5" max="50" value="15" step="1" oninput="document.getElementById('margem-display').textContent=this.value+'%'; calcular()">
+      <div class="margem-refs">
+        <span>5% — mínimo</span>
+        <span>10% — comum</span>
+        <span>15% — bom ✓</span>
+        <span>25% — ótimo</span>
+        <span>50% — máximo</span>
+      </div>
+    </div>
+
+    <!-- EXTRAS -->
+    <div class="extras">
+      <div class="extra-group">
+        <span class="extra-label">Imposto (%)</span>
+        <input class="extra-input" id="imposto" type="number" value="6" min="0" max="30" step="0.5" oninput="calcular()" placeholder="6">
+      </div>
+      <div class="extra-group">
+        <span class="extra-label">Ads / publicidade (%)</span>
+        <input class="extra-input" id="ads" type="number" value="10" min="0" max="30" step="1" oninput="calcular()" placeholder="10">
+      </div>
+      <div class="extra-group">
+        <span class="extra-label">Nome do produto (opcional)</span>
+        <input class="extra-input" id="nome-prod" type="text" placeholder="Ex: Blusa Canelada P Preta">
+      </div>
+    </div>
+
+    <!-- PLATAFORMAS -->
+    <div class="card-title" style="margin-bottom:12px;">Plataformas</div>
+    <div class="plat-toggle">
+      <button class="plat-btn ml on" id="btn-ml" onclick="togglePlat('ml')">🛒 Mercado Livre</button>
+      <button class="plat-btn shopee on" id="btn-shopee" onclick="togglePlat('shopee')">🛍️ Shopee</button>
+      <button class="plat-btn tiktok on" id="btn-tiktok" onclick="togglePlat('tiktok')">🎵 TikTok Shop</button>
+    </div>
+
+    <!-- OPÇÕES POR PLATAFORMA -->
+    <div class="extras" id="opts-ml">
+      <div class="extra-group">
+        <span class="extra-label">Tipo de anúncio ML</span>
+        <select class="extra-select" id="ml-tipo" onchange="calcular()">
+          <option value="0.12">Clássico (12%)</option>
+          <option value="0.17">Premium (17%)</option>
+        </select>
+      </div>
+    </div>
+    <div class="extras" id="opts-shopee" style="margin-top:8px;">
+      <div class="extra-group">
+        <span class="extra-label">Shopee — campanha de destaque</span>
+        <select class="extra-select" id="shopee-camp" onchange="calcular()">
+          <option value="0">Não (+0%)</option>
+          <option value="0.025">Sim (+2,5%)</option>
+        </select>
+      </div>
+    </div>
+    <div class="extras" id="opts-tiktok" style="margin-top:8px;">
+      <div class="extra-group">
+        <span class="extra-label">TikTok — comissão afiliado (%)</span>
+        <input class="extra-input" id="tiktok-afil" type="number" value="0" min="0" max="20" step="1" oninput="calcular()" placeholder="0">
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div class="resultado-grid" id="resultado-grid">
+    <div class="resultado-card ml" id="card-ml">
+      <div class="res-header">
+        <div class="res-nome ml">🛒 Mercado Livre</div>
+        <span class="res-badge" id="badge-ml" style="display:none;">melhor margem</span>
+      </div>
+      <div class="preco-sugerido" id="preco-ml">—</div>
+      <div class="preco-label">preço sugerido de venda</div>
+      <div id="detalhes-ml"></div>
+      <button class="copiar-btn" onclick="copiarPreco('ml')">📋 Copiar preço</button>
+    </div>
+
+    <div class="resultado-card shopee" id="card-shopee">
+      <div class="res-header">
+        <div class="res-nome shopee">🛍️ Shopee</div>
+        <span class="res-badge" id="badge-shopee" style="display:none;">melhor margem</span>
+      </div>
+      <div class="preco-sugerido" id="preco-shopee">—</div>
+      <div class="preco-label">preço sugerido de venda</div>
+      <div id="detalhes-shopee"></div>
+      <button class="copiar-btn" onclick="copiarPreco('shopee')">📋 Copiar preço</button>
+    </div>
+
+    <div class="resultado-card tiktok" id="card-tiktok">
+      <div class="res-header">
+        <div class="res-nome tiktok">🎵 TikTok Shop</div>
+        <span class="res-badge" id="badge-tiktok" style="display:none;">melhor margem</span>
+      </div>
+      <div class="preco-sugerido" id="preco-tiktok">—</div>
+      <div class="preco-label">preço sugerido de venda</div>
+      <div id="detalhes-tiktok"></div>
+      <button class="copiar-btn" onclick="copiarPreco('tiktok')">📋 Copiar preço</button>
+    </div>
+  </div>
+
+  <!-- SALVAR -->
+  <div style="text-align:center;margin:20px 0;">
+    <button onclick="salvarHistorico()" style="background:var(--gold);color:#000;border:none;padding:12px 32px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">💾 Salvar no histórico</button>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div class="card" style="margin-top:8px;">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+      Histórico de precificações
+      <button onclick="limparHistorico()" style="background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;">Limpar tudo</button>
+    </div>
+    <div class="historico-lista" id="historico-lista">
+      <div class="empty-hist">Nenhuma precificação salva ainda.</div>
+    </div>
+  </div>
+
+</main>

@@ -1,0 +1,675 @@
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --text: #f0f0f0;
+    --text2: #888;
+    --text3: #555;
+    --gold: #d4a017;
+    --gold-light: #f5c842;
+    --green: #22c55e;
+    --red: #ef4444;
+    --ml: #ffe600;
+    --shopee: #ff6633;
+    --tiktok: #ffffff;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* MAIN */
+  .main { padding: 28px 32px; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .topbar-left h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+
+  .topbar-left p {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .filter-label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .filter-select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    outline: none;
+    min-width: 160px;
+  }
+
+  .filter-select:focus { border-color: var(--gold); }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-gold { background: var(--gold); color: #000; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+  .btn-outline:hover { border-color: var(--text2); color: var(--text); }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .kpi-card.gold::before { background: var(--gold); }
+  .kpi-card.green::before { background: var(--green); }
+  .kpi-card.blue::before { background: #3b82f6; }
+  .kpi-card.purple::before { background: #a855f7; }
+
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .kpi-value {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+
+  .kpi-card.gold .kpi-value { color: var(--gold); }
+  .kpi-card.green .kpi-value { color: var(--green); }
+  .kpi-card.blue .kpi-value { color: #3b82f6; }
+  .kpi-card.purple .kpi-value { color: #a855f7; }
+
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .badge-up { color: var(--green); font-size: 11px; }
+  .badge-down { color: var(--red); font-size: 11px; }
+
+  /* MARKETPLACE BREAKDOWN */
+  .section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+  }
+
+  .marketplace-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .mkt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+
+  .mkt-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .mkt-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .mkt-dot.ml { background: var(--ml); }
+  .mkt-dot.shopee { background: var(--shopee); }
+  .mkt-dot.tiktok { background: #69c9d0; }
+
+  .mkt-name { font-size: 14px; font-weight: 600; }
+  .mkt-badge {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .mkt-badge.ml { background: rgba(255,230,0,0.12); color: var(--ml); }
+  .mkt-badge.shopee { background: rgba(255,102,51,0.12); color: var(--shopee); }
+  .mkt-badge.tiktok { background: rgba(105,201,208,0.12); color: #69c9d0; }
+
+  .mkt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .mkt-row:last-child { border-bottom: none; }
+  .mkt-row-label { color: var(--text2); }
+  .mkt-row-value { font-weight: 500; }
+  .mkt-row-value.green { color: var(--green); }
+  .mkt-row-value.red { color: var(--red); }
+
+  /* BOTTOM GRID */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .panel-title {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* EMPRESA SELECTOR */
+  .empresa-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .empresa-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    background: transparent;
+    transition: all 0.15s;
+  }
+
+  .empresa-tab:hover { border-color: var(--gold); color: var(--gold); }
+  .empresa-tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+  /* TOP PRODUTOS */
+  .produto-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .produto-row:last-child { border-bottom: none; }
+
+  .produto-rank {
+    font-size: 12px;
+    color: var(--text3);
+    width: 20px;
+    text-align: center;
+  }
+
+  .produto-info { flex: 1; }
+  .produto-name { font-size: 13px; font-weight: 500; }
+  .produto-mkt { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .produto-valor {
+    text-align: right;
+  }
+
+  .produto-receita { font-size: 13px; font-weight: 600; color: var(--green); }
+  .produto-qtd { font-size: 11px; color: var(--text3); }
+
+  /* ALERTAS */
+  .alerta-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .alerta-row:last-child { border-bottom: none; }
+
+  .alerta-icon {
+    font-size: 16px;
+    margin-top: 1px;
+  }
+
+  .alerta-text { font-size: 13px; flex: 1; }
+  .alerta-label { font-weight: 500; }
+  .alerta-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  /* PROGRESS BAR */
+  .progress-wrap { margin-bottom: 14px; }
+  .progress-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+  .progress-label { color: var(--text2); }
+  .progress-val { font-weight: 500; }
+  .progress-bar { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+
+  /* CNPJ INFO */
+  .cnpj-card {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cnpj-name { font-size: 13px; font-weight: 500; }
+  .cnpj-doc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .cnpj-status { font-size: 11px; color: var(--green); }
+
+  /* PERIOD BADGE */
+  .period-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .marketplace-grid { grid-template-columns: 1fr; }
+    .bottom-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<main class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1>Dashboard</h1>
+      <p>Visão geral da operação — atualizado agora</p>
+    </div>
+    <div class="topbar-right">
+      <div class="period-badge">📅 Junho 2025</div>
+      <button class="btn btn-outline">Exportar</button>
+      <button class="btn btn-gold">+ Importar planilha</button>
+    </div>
+  </div>
+
+  <!-- EMPRESA TABS -->
+  <div class="empresa-tabs">
+    <button class="empresa-tab active" onclick="selectEmpresa(this, 'todas')">Todas as empresas</button>
+    <button class="empresa-tab" onclick="selectEmpresa(this, 'fashion')">Fashion Hot</button>
+    <button class="empresa-tab" onclick="selectEmpresa(this, 'beyou')">BeYou Fashion</button>
+    <button class="empresa-tab" onclick="selectEmpresa(this, 'rgkids')">RG Kids</button>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Marketplace</span>
+      <select class="filter-select" onchange="filterMkt(this.value)">
+        <option value="todos">Todos os marketplaces</option>
+        <option value="ml">Mercado Livre</option>
+        <option value="shopee">Shopee</option>
+        <option value="tiktok">TikTok Shop</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Período</span>
+      <select class="filter-select">
+        <option>Este mês</option>
+        <option>Mês passado</option>
+        <option>Últimos 3 meses</option>
+        <option>Este ano</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card gold">
+      <div class="kpi-label">Faturamento Bruto</div>
+      <div class="kpi-value" id="kpi-bruto">R$ 84.320</div>
+      <div class="kpi-sub"><span class="badge-up">↑ 12%</span> vs mês anterior</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Faturamento Líquido</div>
+      <div class="kpi-value" id="kpi-liquido">R$ 31.640</div>
+      <div class="kpi-sub"><span class="badge-up">↑ 8%</span> margem 37,5%</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Pedidos no Período</div>
+      <div class="kpi-value" id="kpi-pedidos">1.248</div>
+      <div class="kpi-sub"><span class="badge-up">↑ 204</span> vs mês anterior</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Ticket Médio</div>
+      <div class="kpi-value" id="kpi-ticket">R$ 67,56</div>
+      <div class="kpi-sub"><span class="badge-down">↓ 3%</span> vs mês anterior</div>
+    </div>
+  </div>
+
+  <!-- MARKETPLACE BREAKDOWN -->
+  <div class="section-title">Resultado por marketplace</div>
+  <div class="marketplace-grid" id="mkt-grid">
+
+    <div class="mkt-card" id="card-ml">
+      <div class="mkt-header">
+        <div class="mkt-dot ml"></div>
+        <div class="mkt-name">Mercado Livre</div>
+        <div class="mkt-badge ml">Principal</div>
+      </div>
+      <div class="mkt-row"><span class="mkt-row-label">Faturamento bruto</span><span class="mkt-row-value">R$ 51.400</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Comissão + frete</span><span class="mkt-row-value red">- R$ 9.252</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Gasto em ads</span><span class="mkt-row-value red">- R$ 5.140</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Custo de produtos</span><span class="mkt-row-value red">- R$ 18.490</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Lucro líquido</span><span class="mkt-row-value green">R$ 18.518</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Margem líquida</span><span class="mkt-row-value green">36%</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Pedidos</span><span class="mkt-row-value">742</span></div>
+    </div>
+
+    <div class="mkt-card" id="card-shopee">
+      <div class="mkt-header">
+        <div class="mkt-dot shopee"></div>
+        <div class="mkt-name">Shopee</div>
+        <div class="mkt-badge shopee">Crescendo</div>
+      </div>
+      <div class="mkt-row"><span class="mkt-row-label">Faturamento bruto</span><span class="mkt-row-value">R$ 24.780</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Comissão + taxa fixa</span><span class="mkt-row-value red">- R$ 5.448</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Gasto em ads</span><span class="mkt-row-value red">- R$ 2.478</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Custo de produtos</span><span class="mkt-row-value red">- R$ 8.913</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Lucro líquido</span><span class="mkt-row-value green">R$ 7.941</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Margem líquida</span><span class="mkt-row-value green">32%</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Pedidos</span><span class="mkt-row-value">389</span></div>
+    </div>
+
+    <div class="mkt-card" id="card-tiktok">
+      <div class="mkt-header">
+        <div class="mkt-dot tiktok"></div>
+        <div class="mkt-name">TikTok Shop</div>
+        <div class="mkt-badge tiktok">Novo</div>
+      </div>
+      <div class="mkt-row"><span class="mkt-row-label">Faturamento bruto</span><span class="mkt-row-value">R$ 8.140</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Comissão + afiliado</span><span class="mkt-row-value red">- R$ 977</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Gasto em ads</span><span class="mkt-row-value red">- R$ 814</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Custo de produtos</span><span class="mkt-row-value red">- R$ 2.929</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Lucro líquido</span><span class="mkt-row-value green">R$ 3.420</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Margem líquida</span><span class="mkt-row-value green">42%</span></div>
+      <div class="mkt-row"><span class="mkt-row-label">Pedidos</span><span class="mkt-row-value">117</span></div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <!-- TOP PRODUTOS -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🏆 Top produtos do mês</div>
+        <span style="font-size:12px;color:var(--text3);">por receita</span>
+      </div>
+
+      <div class="produto-row">
+        <div class="produto-rank">1</div>
+        <div class="produto-info">
+          <div class="produto-name">Conjunto Linho Feminino</div>
+          <div class="produto-mkt">Mercado Livre · Fashion Hot</div>
+        </div>
+        <div class="produto-valor">
+          <div class="produto-receita">R$ 8.420</div>
+          <div class="produto-qtd">124 vendidos</div>
+        </div>
+      </div>
+
+      <div class="produto-row">
+        <div class="produto-rank">2</div>
+        <div class="produto-info">
+          <div class="produto-name">Vestido Midi Estampado</div>
+          <div class="produto-mkt">Shopee · BeYou Fashion</div>
+        </div>
+        <div class="produto-valor">
+          <div class="produto-receita">R$ 6.190</div>
+          <div class="produto-qtd">97 vendidos</div>
+        </div>
+      </div>
+
+      <div class="produto-row">
+        <div class="produto-rank">3</div>
+        <div class="produto-info">
+          <div class="produto-name">Body Infantil Básico Kit 3</div>
+          <div class="produto-mkt">Mercado Livre · RG Kids</div>
+        </div>
+        <div class="produto-valor">
+          <div class="produto-receita">R$ 5.840</div>
+          <div class="produto-qtd">219 vendidos</div>
+        </div>
+      </div>
+
+      <div class="produto-row">
+        <div class="produto-rank">4</div>
+        <div class="produto-info">
+          <div class="produto-name">Calça Wide Leg Jeans</div>
+          <div class="produto-mkt">TikTok Shop · Fashion Hot</div>
+        </div>
+        <div class="produto-valor">
+          <div class="produto-receita">R$ 4.310</div>
+          <div class="produto-qtd">68 vendidos</div>
+        </div>
+      </div>
+
+      <div class="produto-row">
+        <div class="produto-rank">5</div>
+        <div class="produto-info">
+          <div class="produto-name">Blusa Cropped Canelada</div>
+          <div class="produto-mkt">Shopee · BeYou Fashion</div>
+        </div>
+        <div class="produto-valor">
+          <div class="produto-receita">R$ 3.920</div>
+          <div class="produto-qtd">112 vendidos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALERTAS + METAS -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">⚠️ Alertas</div>
+        </div>
+
+        <div class="alerta-row">
+          <div class="alerta-icon">🔴</div>
+          <div class="alerta-text">
+            <div class="alerta-label">ACOS acima do limite</div>
+            <div class="alerta-sub">Campanha "Vestido Midi" no ML — ACOS 38% (limite: 25%)</div>
+          </div>
+        </div>
+
+        <div class="alerta-row">
+          <div class="alerta-icon">🟡</div>
+          <div class="alerta-text">
+            <div class="alerta-label">Estoque crítico</div>
+            <div class="alerta-sub">Body Infantil Kit 3 — apenas 12 unidades restantes</div>
+          </div>
+        </div>
+
+        <div class="alerta-row">
+          <div class="alerta-icon">🟡</div>
+          <div class="alerta-text">
+            <div class="alerta-label">Paridade de preço</div>
+            <div class="alerta-sub">Conjunto Linho está R$8 mais caro no ML do que na Shopee</div>
+          </div>
+        </div>
+
+        <div class="alerta-row">
+          <div class="alerta-icon">🟢</div>
+          <div class="alerta-text">
+            <div class="alerta-label">TikTok Shop com melhor margem</div>
+            <div class="alerta-sub">42% de margem líquida — considere aumentar investimento</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🎯 Metas do mês</div>
+          <span style="font-size:12px;color:var(--text3);">Junho 2025</span>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-header">
+            <span class="progress-label">Faturamento bruto</span>
+            <span class="progress-val">R$84k / R$100k</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:84%;background:var(--gold);"></div>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-header">
+            <span class="progress-label">Pedidos</span>
+            <span class="progress-val">1.248 / 1.500</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:83%;background:#3b82f6;"></div>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-header">
+            <span class="progress-label">Margem líquida</span>
+            <span class="progress-val">37,5% / 40%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:93%;background:var(--green);"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EMPRESAS -->
+  <div class="section-title">Empresas cadastradas</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">
+    <div class="cnpj-card">
+      <div>
+        <div class="cnpj-name">Fashion Hot</div>
+        <div class="cnpj-doc">CNPJ 12.345.678/0001-90</div>
+      </div>
+      <div class="cnpj-status">● Ativo</div>
+    </div>
+    <div class="cnpj-card">
+      <div>
+        <div class="cnpj-name">BeYou Fashion</div>
+        <div class="cnpj-doc">CNPJ 98.765.432/0001-10</div>
+      </div>
+      <div class="cnpj-status">● Ativo</div>
+    </div>
+    <div class="cnpj-card">
+      <div>
+        <div class="cnpj-name">RG Kids</div>
+        <div class="cnpj-doc">CNPJ 11.222.333/0001-44</div>
+      </div>
+      <div class="cnpj-status">● Ativo</div>
+    </div>
+  </div>
+
+</main>

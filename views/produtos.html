@@ -1,0 +1,315 @@
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --surface3: #2e2e2e;
+    --border: #2e2e2e;
+    --text: #f0f0f0;
+    --text2: #888;
+    --text3: #555;
+    --gold: #d4a017;
+    --gold-light: #f5c842;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  
+
+  /* LAYOUT */
+
+
+  .main { padding: 28px 32px; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .topbar h1 { font-size: 22px; font-weight: 600; }
+  .topbar p { font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .topbar-right { display: flex; gap: 10px; align-items: center; }
+
+  .btn { padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
+  .btn-gold { background: var(--gold); color: #000; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+  .btn-outline:hover { border-color: var(--text2); color: var(--text); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn-red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .btn-green { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+  .stat-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--gold); }
+  .stat-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
+
+  /* FILTROS */
+  .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end; }
+  .filter-group { display: flex; flex-direction: column; gap: 4px; }
+  .filter-label { font-size: 11px; color: var(--text3); }
+  .filter-select, .filter-input {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    font-size: 13px; padding: 8px 12px; border-radius: var(--radius-sm); outline: none; min-width: 140px;
+  }
+  .filter-select:focus, .filter-input:focus { border-color: var(--gold); }
+
+  /* TABELA */
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--surface2); }
+  thead th { padding: 12px 16px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); font-weight: 500; white-space: nowrap; }
+  tbody tr { border-top: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 12px 16px; font-size: 13px; vertical-align: middle; }
+
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-fab { background: rgba(212,160,23,0.12); color: var(--gold); }
+  .badge-rev { background: rgba(59,130,246,0.12); color: var(--blue); }
+  .badge-mix { background: rgba(168,85,247,0.12); color: #a855f7; }
+  .badge-ativo { background: rgba(34,197,94,0.12); color: var(--green); }
+  .badge-inativo { background: rgba(100,100,100,0.12); color: var(--text3); }
+  .badge-kit { background: rgba(239,68,68,0.12); color: var(--red); font-size: 10px; }
+
+  .produto-nome { font-weight: 500; }
+  .produto-sku { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: monospace; }
+  .produto-variacao { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  .custo { font-weight: 600; color: var(--green); }
+  .acoes { display: flex; gap: 6px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    width: 680px; max-height: 90vh; overflow-y: auto; padding: 28px;
+  }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .modal-title { font-size: 18px; font-weight: 600; }
+  .modal-close { background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-full { grid-column: 1 / -1; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 12px; color: var(--text2); font-weight: 500; }
+  .form-input, .form-select, .form-textarea {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    font-size: 14px; padding: 10px 12px; border-radius: var(--radius-sm); outline: none;
+    font-family: inherit;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-hint { font-size: 11px; color: var(--text3); }
+
+  .form-section { margin: 20px 0 14px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .form-section-title { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* TIPO BADGE SELECTOR */
+  .tipo-selector { display: flex; gap: 8px; }
+  .tipo-btn {
+    flex: 1; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; text-align: center;
+    transition: all 0.15s;
+  }
+  .tipo-btn:hover { border-color: var(--gold); }
+  .tipo-btn.selected-fab { background: rgba(212,160,23,0.12); border-color: var(--gold); color: var(--gold); }
+  .tipo-btn.selected-rev { background: rgba(59,130,246,0.12); border-color: var(--blue); color: var(--blue); }
+  .tipo-btn.selected-mix { background: rgba(168,85,247,0.12); border-color: #a855f7; color: #a855f7; }
+
+  /* VARIAÇÕES */
+  .variacoes-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .variacao-row {
+    display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center;
+    background: var(--surface2); padding: 10px 12px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .variacao-row .sku-preview { font-size: 11px; color: var(--text3); font-family: monospace; }
+  .btn-add-var { margin-top: 4px; }
+  .btn-remove { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; }
+  .btn-remove:hover { color: var(--red); }
+
+  /* KIT SECTION */
+  .kit-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+  /* SKU PREVIEW */
+  .sku-preview-box {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 10px 14px; font-family: monospace; font-size: 13px; color: var(--gold);
+    margin-top: 4px;
+  }
+
+  /* CUSTO CALCULADO */
+  .custo-box {
+    background: rgba(34,197,94,0.05); border: 1px solid rgba(34,197,94,0.2);
+    border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 8px;
+  }
+  .custo-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+  .custo-row-label { color: var(--text2); }
+  .custo-row-val { font-weight: 500; }
+  .custo-total { border-top: 1px solid rgba(34,197,94,0.2); margin-top: 8px; padding-top: 8px; font-weight: 700; color: var(--green); }
+
+  .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text3); }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state p { font-size: 14px; }
+</style>
+<main class="main">
+
+  <div class="topbar">
+    <div>
+      <h1>Produtos</h1>
+      <p>Cadastre e gerencie seus produtos com variações, kits e custos</p>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-outline" onclick="exportarProdutos()">📤 Exportar</button>
+      <button class="btn btn-gold" onclick="abrirModal()">+ Novo produto</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total de produtos</div>
+      <div class="stat-value" id="stat-total">0</div>
+      <div class="stat-sub">cadastrados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Fabricados</div>
+      <div class="stat-value" id="stat-fab" style="color:var(--gold)">0</div>
+      <div class="stat-sub">produção própria</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Revendidos</div>
+      <div class="stat-value" id="stat-rev" style="color:var(--blue)">0</div>
+      <div class="stat-sub">compra para revenda</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Mistos</div>
+      <div class="stat-value" id="stat-mix" style="color:#a855f7">0</div>
+      <div class="stat-sub">fabricado + revendido</div>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Buscar</span>
+      <input class="filter-input" type="text" placeholder="Nome ou SKU..." oninput="filtrar()" id="busca">
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Tipo</span>
+      <select class="filter-select" onchange="filtrar()" id="filtro-tipo">
+        <option value="">Todos</option>
+        <option value="fabricado">Fabricado</option>
+        <option value="revendido">Revendido</option>
+        <option value="misto">Misto</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Status</span>
+      <select class="filter-select" onchange="filtrar()" id="filtro-status">
+        <option value="">Todos</option>
+        <option value="ativo">Ativo</option>
+        <option value="inativo">Inativo</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Kit</span>
+      <select class="filter-select" onchange="filtrar()" id="filtro-kit">
+        <option value="">Todos</option>
+        <option value="1">Kit 1</option>
+        <option value="2">Kit 2</option>
+        <option value="3">Kit 3</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- TABELA -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Variação</th>
+          <th>SKU</th>
+          <th>Tipo</th>
+          <th>Kit</th>
+          <th>Custo unit.</th>
+          <th>Custo kit</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-body">
+        <tr>
+          <td colspan="9">
+            <div class="empty-state">
+              <div class="icon">🏷️</div>
+              <p>Nenhum produto cadastrado ainda.<br>Clique em <strong>+ Novo produto</strong> para começar.</p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="fecharModalFora(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-titulo">Novo produto</div>
+      <button class="modal-close" onclick="fecharModal()">✕</button>
+    </div>
+
+    <!-- TIPO -->
+    <div class="form-group">
+      <span class="form-label">Tipo de produto</span>
+      <div class="tipo-selector">
+        <button class="tipo-btn selected-fab" onclick="selecionarTipo('fabricado', this)">🧵 Fabricado</button>
+        <button class="tipo-btn" onclick="selecionarTipo('revendido', this)">🛒 Revendido</button>
+        <button class="tipo-btn" onclick="selecionarTipo('misto', this)">⚡ Misto</button>
+      </div>
+      <input type="hidden" id="tipo-valor" value="fabricado">
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Informações do produto</div>
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label class="form-label">Nome do produto <span style="color:var(--red)">*</span></label>
+          <input class="form-input" id="nome" type="text" placeholder="Ex: Blusa Canelada Feminina" oninput="gerarSKU()">
+          <span class="form-hint">Use o nome completo — sua equipe vai ver esse nome na separação</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categoria</label>
+          <select class="form-select" id="categoria">
+            <option>Blusas e tops</option>
+            <option>Calças e bermudas</option>
+            <option>Vestidos e saias</option>
+            <option>Conjuntos</option>
+            <option>Infantil</option>
+            <option>Acessórios</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Empresa</label>
+          <select class="form-select" id="empresa" onchange="toggleEmpresaHint(this)">
+            <option value="todas">⚡ Todas as empresas</option>
+            <option value="Fashion Hot">Fashion Hot</option>
+            <option value="BeYou Fashion">BeYou Fashion</option>
+            <option value="RG Kids">RG Kids</option>
+          </select>
+          <span class="form-hint" id="empresa-hint" style="color:var(--gold);">Será replicado em Fashion Hot, BeYou Fashion e RG Kids</span>
+        </div>
+      </div>

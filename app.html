@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SellerReal — Sistema</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body class="app-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <a href="index.html" class="logo-link">
+        <div class="logo-text">SellerReal</div>
+        <div class="logo-sub">Gestão de marketplace</div>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Principal</div>
+      <a class="nav-item" data-route="dashboard" href="#/dashboard"><span class="icon">📊</span> Dashboard</a>
+      <span class="nav-item disabled"><span class="icon">💰</span> Financeiro</span>
+      <span class="nav-item disabled"><span class="icon">📦</span> Pedidos</span>
+      <a class="nav-item" data-route="produtos" href="#/produtos"><span class="icon">🏷️</span> Produtos</a>
+      <span class="nav-item disabled"><span class="icon">📢</span> Anúncios &amp; Ads</span>
+    </div>
+
+    <div class="nav-section" style="margin-top:16px;">
+      <div class="nav-label">Operação</div>
+      <span class="nav-item disabled"><span class="icon">🧵</span> Produção</span>
+      <span class="nav-item disabled"><span class="icon">🗃️</span> Estoque</span>
+      <span class="nav-item disabled"><span class="icon">📥</span> Importar planilha</span>
+    </div>
+
+    <div class="nav-section" style="margin-top:16px;">
+      <div class="nav-label">Ferramentas</div>
+      <a class="nav-item" data-route="precificacao" href="#/precificacao"><span class="icon">🧮</span> Precificação</a>
+      <a class="nav-item" data-route="sku" href="#/sku"><span class="icon">🔖</span> Gerador de SKU</a>
+      <span class="nav-item disabled"><span class="icon">📸</span> Fotos com IA</span>
+    </div>
+
+    <div class="sidebar-bottom">
+      <span class="nav-item disabled"><span class="icon">⚙️</span> Configurações</span>
+      <span class="nav-item disabled"><span class="icon">👤</span> Minha conta</span>
+    </div>
+  </aside>
+
+  <div id="app-content">
+    <div class="app-loading">Carregando...</div>
+  </div>
+
+  <script src="js/router.js"></script>
+</body>
+</html>

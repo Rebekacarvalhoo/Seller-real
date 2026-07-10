@@ -1,0 +1,163 @@
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #242424;
+    --border: #2e2e2e; --text: #f0f0f0; --text2: #888; --text3: #555;
+    --gold: #d4a017; --gold-light: #f5c842; --green: #22c55e; --red: #ef4444;
+    --radius: 12px; --radius-sm: 8px;
+  }
+  .main { padding: 28px 32px; }
+  h1 { font-size: 20px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .sub { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
+  .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .layout { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+  .card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); margin-bottom: 16px; }
+  .fg { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .fl { font-size: 12px; color: var(--text2); font-weight: 500; }
+  .fh { font-size: 11px; color: var(--text3); }
+  .fi { background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 15px; padding: 11px 14px; border-radius: var(--radius-sm); outline: none; font-family: inherit; width: 100%; }
+  .fi:focus { border-color: var(--gold); }
+  .preview-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 11px 14px; font-family: monospace; font-size: 13px; color: var(--gold); min-height: 42px; word-break: break-all; }
+  .kit-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .kit-btn { padding: 10px 6px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; }
+  .kit-btn.on { background: rgba(212,160,23,0.12); border-color: var(--gold); color: var(--gold); }
+  .cores-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; min-height: 32px; }
+  .cor-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; }
+  .cor-del { cursor: pointer; color: var(--text3); font-size: 13px; }
+  .cor-del:hover { color: var(--red); }
+  .cor-input-row { display: flex; gap: 8px; }
+  .cor-input-row input { flex: 1; }
+  .cores-rapidas { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .cor-rapida { padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 11px; cursor: pointer; }
+  .cor-rapida:hover { border-color: var(--gold); color: var(--gold); }
+  .cor-rapida.usada { border-color: var(--gold); color: var(--gold); background: rgba(212,160,23,0.08); }
+  .tam-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tam-btn { padding: 7px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 13px; font-weight: 500; cursor: pointer; }
+  .tam-btn.on { background: rgba(212,160,23,0.12); border-color: var(--gold); color: var(--gold); }
+  .btn-add { padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; white-space: nowrap; }
+  .btn-add:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-row { display: flex; gap: 8px; margin-top: 8px; }
+  .btn-gerar { flex: 1; padding: 14px; border-radius: var(--radius-sm); border: none; background: var(--gold); color: #000; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .btn-gerar:hover { background: var(--gold-light); }
+  .btn-limpar { padding: 14px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; }
+  .btn-limpar:hover { border-color: var(--red); color: var(--red); }
+  .res-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .res-count { font-size: 13px; color: var(--text2); }
+  .res-count strong { color: var(--gold); }
+  .btn-copiar-tudo { padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--gold); background: transparent; color: var(--gold); font-size: 12px; font-weight: 500; cursor: pointer; }
+  .sku-lista { display: flex; flex-direction: column; gap: 6px; max-height: 400px; overflow-y: auto; }
+  .sku-item { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .sku-item.novo { border-color: rgba(212,160,23,0.4); animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .sku-text { font-family: monospace; font-size: 12px; color: var(--text); flex: 1; word-break: break-all; }
+  .sku-meta { font-size: 10px; color: var(--text3); margin-top: 2px; }
+  .sku-cp { background: none; border: 1px solid var(--border); color: var(--text2); cursor: pointer; font-size: 11px; padding: 4px 8px; border-radius: 4px; white-space: nowrap; }
+  .sku-cp:hover { border-color: var(--gold); color: var(--gold); }
+  .sku-del { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 14px; padding: 2px 4px; }
+  .sku-del:hover { color: var(--red); }
+  .export-row { display: flex; gap: 8px; margin-top: 12px; }
+  .btn-exp { flex: 1; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); color: var(--text2); font-size: 12px; cursor: pointer; text-align: center; }
+  .btn-exp:hover { border-color: var(--text2); color: var(--text); }
+  .empty { text-align: center; padding: 40px 20px; color: var(--text3); }
+  .empty .ico { font-size: 32px; margin-bottom: 8px; }
+  .empty p { font-size: 12px; }
+  .section-mini { font-size: 11px; color: var(--text3); margin-bottom: 6px; margin-top: 10px; }
+  .badge-novo { font-size: 10px; background: rgba(212,160,23,0.15); color: var(--gold); padding: 2px 6px; border-radius: 10px; margin-left: 6px; }
+  .busca-wrap { margin-bottom: 12px; }
+  .grupo-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 0 4px; border-bottom: 1px solid var(--border); margin-bottom: 6px; }
+  .grupo-nome { font-size: 12px; font-weight: 600; color: var(--gold); }
+  .grupo-del { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 11px; }
+  .grupo-del:hover { color: var(--red); }
+</style>
+<main class="main">
+<h1>🔖 Gerador de SKU — SellerReal</h1>
+<p class="sub">Gere e acumule SKUs de vários produtos. Tudo fica salvo na biblioteca.</p>
+
+<div class="layout">
+
+  <!-- FORMULÁRIO -->
+  <div class="card">
+    <div class="card-title">Dados do produto</div>
+    <div class="fg">
+      <span class="fl">Nome do produto</span>
+      <input class="fi" id="nome" type="text" placeholder="Ex: Bermuda Infantil Moletinho" oninput="atualizarPreview()">
+    </div>
+    <div class="fg">
+      <span class="fl">Preview do SKU</span>
+      <div class="preview-box" id="preview">—</div>
+    </div>
+    <div class="fg">
+      <span class="fl">Tipo de venda</span>
+      <div class="kit-grid" id="kit-grid"></div>
+      <span class="fh">Selecione um ou mais — gera SKU pra cada</span>
+    </div>
+    <div class="fg">
+      <span class="fl">Cores</span>
+      <div class="cores-wrap" id="cores-wrap"></div>
+      <div class="cor-input-row">
+        <input class="fi" id="cor-input" type="text" placeholder="Digite uma cor">
+        <button class="btn-add" onclick="adicionarCor()">+ Adicionar</button>
+      </div>
+      <div class="section-mini">Cores frequentes:</div>
+      <div class="cores-rapidas" id="cores-rapidas"></div>
+    </div>
+    <div class="fg">
+      <span class="fl">Tamanhos</span>
+      <div class="section-mini">Adulto:</div>
+      <div class="tam-wrap" id="tam-adulto"></div>
+      <div class="section-mini">Infantil:</div>
+      <div class="tam-wrap" id="tam-infantil"></div>
+      <span class="fh" style="margin-top:6px;">Deixe em branco se nao tem tamanho</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn-gerar" onclick="gerarSKUs()">+ Gerar e adicionar</button>
+      <button class="btn-limpar" onclick="limparFormulario()">Limpar</button>
+    </div>
+  </div>
+
+  <!-- RESULTADO ATUAL -->
+  <div>
+    <div class="card">
+      <div class="res-header">
+        <div>
+          <div class="card-title" style="margin-bottom:0;">SKUs desta sessao</div>
+          <span class="res-count"><strong id="count-sessao">0</strong> SKUs gerados agora</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-copiar-tudo" onclick="copiarSessao()">Copiar sessao</button>
+          <button class="btn-exp" style="padding:7px 12px;" onclick="limparSessao()">Limpar</button>
+        </div>
+      </div>
+      <div class="sku-lista" id="sku-lista-sessao">
+        <div class="empty"><div class="ico">🔖</div><p>Preencha e clique em Gerar</p></div>
+      </div>
+      <div class="export-row" id="export-row-sessao" style="display:none;">
+        <button class="btn-exp" onclick="salvarNaBiblioteca()">💾 Salvar na biblioteca</button>
+        <button class="btn-exp" onclick="exportarCSV('sessao')">Exportar CSV</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BIBLIOTECA -->
+<div class="card">
+  <div class="res-header">
+    <div>
+      <div class="card-title" style="margin-bottom:0;">📚 Biblioteca de SKUs</div>
+      <span class="res-count"><strong id="count-biblioteca">0</strong> SKUs salvos</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-copiar-tudo" onclick="copiarBiblioteca()">Copiar tudo</button>
+      <button class="btn-exp" style="padding:7px 12px;" onclick="exportarCSV('biblioteca')">Exportar CSV</button>
+      <button class="btn-exp" style="padding:7px 12px;color:var(--red);" onclick="limparBiblioteca()">Limpar tudo</button>
+    </div>
+  </div>
+  <div class="busca-wrap">
+    <input class="fi" id="busca" type="text" placeholder="Buscar SKU ou produto..." oninput="renderBiblioteca()">
+  </div>
+  <div id="biblioteca-lista">
+    <div class="empty"><div class="ico">📚</div><p>Nenhum SKU salvo ainda.<br>Gere SKUs e clique em Salvar na biblioteca.</p></div>
+  </div>
+</div>
+</main>
